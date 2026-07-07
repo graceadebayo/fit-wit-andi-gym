@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitWitAndi Gym | Train. Transform. Thrive.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;0,900&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0f0f0f;
+  --white: #f5f5f0;
+  --grey: #1a1a1a;
+  --grey2: #252525;
+  --muted: #777;
+  --success: #4ade80;
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--black); color:var(--white); font-family:'Barlow',sans-serif; overflow-x:hidden; cursor:none; }
+
+/* ── CURSOR ── */
+.cursor { position:fixed; width:10px; height:10px; background:var(--white); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s; box-shadow:0 0 15px rgba(255,255,255,.6); }
+.cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(255,255,255,.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s; box-shadow:0 0 20px rgba(255,255,255,.2); }
+
+/* ── NAV ── */
+nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:1.2rem 3rem; background:rgba(10,10,10,.92); backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); transition:background .3s; box-shadow:0 4px 20px rgba(0,0,0,.3); }
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:3px; color:var(--white); text-decoration:none; text-shadow:0 2px 10px rgba(0,0,0,.5); }
+.nav-links { display:flex; gap:2.5rem; list-style:none; }
+.nav-links a { color:var(--muted); font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:2px; text-decoration:none; transition:color .2s; position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--white); transition:width .3s; }
+.nav-links a:hover { color:var(--white); }
+.nav-links a:hover::after { width:100%; }
+.nav-cta { background:var(--white); color:var(--black); border:none; padding:.6rem 1.6rem; font-family:'Barlow',sans-serif; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:2px; cursor:pointer; transition:all .2s; box-shadow:0 4px 15px rgba(255,255,255,.2); }
+.nav-cta:hover { background:var(--muted); transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,255,255,.3); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; }
+.hamburger span { display:block; width:24px; height:1.5px; background:var(--white); transition:all .3s; }
+
+/* ── MOBILE MENU ── */
+.mobile-menu { position:fixed; inset:0; background:var(--black); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem; opacity:0; pointer-events:none; transition:opacity .3s; }
+.mobile-menu.open { opacity:1; pointer-events:all; }
+.mobile-menu a { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:var(--white); text-decoration:none; letter-spacing:4px; transition:color .2s; }
+.mobile-menu a:hover { color:var(--muted); }
+
+/* ── HERO ── */
+#hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; position:relative; overflow:hidden; padding-top:80px; }
+.hero-video-bg { position:absolute; top:0; right:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+.hero-video-overlay { position:absolute; inset:0; background:linear-gradient(135deg, rgba(10,10,10,.75) 0%, rgba(10,10,10,.5) 50%, rgba(10,10,10,.7) 100%); z-index:1; }
+.hero-left { display:flex; flex-direction:column; justify-content:center; padding:5rem 3rem; z-index:2; position:relative; }
+.hero-badge { display:inline-flex; align-items:center; gap:.6rem; border:1px solid rgba(255,255,255,.25); padding:.4rem 1rem; font-size:.68rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--white); margin-bottom:2rem; width:fit-content; background:rgba(255,255,255,.05); backdrop-filter:blur(10px); }
+.hero-badge::before { content:''; width:6px; height:6px; background:var(--white); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
+.hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(4.5rem,8vw,7.5rem); line-height:.88; letter-spacing:2px; margin-bottom:1.8rem; text-shadow:0 4px 20px rgba(0,0,0,.8); }
+.hero-title .outline { -webkit-text-stroke:2px rgba(255,255,255,.3); color:transparent; }
+.hero-sub { font-size:1rem; font-weight:300; color:rgba(255,255,255,.9); line-height:1.8; max-width:400px; margin-bottom:2.5rem; text-shadow:0 2px 10px rgba(0,0,0,.6); }
+.hero-sub em { color:var(--white); font-style:normal; font-weight:600; }
+.hero-actions { display:flex; gap:1rem; align-items:center; margin-bottom:3rem; }
+.btn-primary { background:var(--white); color:var(--black); border:none; padding:1rem 2.5rem; font-family:'Barlow',sans-serif; font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:2px; cursor:pointer; text-decoration:none; display:inline-block; transition:all .2s; box-shadow:0 6px 25px rgba(255,255,255,.3); }
+.btn-primary:hover { background:var(--muted); transform:translateY(-3px); box-shadow:0 12px 40px rgba(255,255,255,.4); }
+.btn-outline { border:2px solid rgba(255,255,255,.4); color:var(--white); padding:1rem 2rem; font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:2px; cursor:pointer; text-decoration:none; display:inline-block; transition:all .2s; background:rgba(255,255,255,.05); backdrop-filter:blur(10px); }
+.btn-outline:hover { border-color:var(--white); background:rgba(255,255,255,.15); }
+.hero-stats { display:flex; gap:2.5rem; padding-top:2rem; border-top:1px solid rgba(255,255,255,.15); }
+.stat-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--white); line-height:1; text-shadow:0 2px 10px rgba(0,0,0,.6); }
+.stat-label { font-size:.65rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.7); }
+.hero-right { position:relative; overflow:hidden; z-index:2; }
+.hero-gym-label { position:absolute; bottom:2rem; right:2rem; background:var(--white); color:var(--black); padding:.7rem 1.2rem; font-family:'Barlow Condensed',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; box-shadow:0 4px 15px rgba(0,0,0,.4); }
+.scroll-indicator { position:absolute; bottom:2rem; left:3rem; display:flex; align-items:center; gap:.8rem; font-size:.62rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.6); z-index:2; text-shadow:0 2px 8px rgba(0,0,0,.5); }
+.scroll-line { width:40px; height:1px; background:rgba(255,255,255,.3); position:relative; overflow:hidden; }
+.scroll-line::after { content:''; position:absolute; left:-100%; top:0; width:100%; height:100%; background:var(--white); animation:scrollLine 2s infinite; }
+@keyframes scrollLine { to { left:100%; } }
+
+/* ── MARQUEE ── */
+.marquee-strip { background:linear-gradient(90deg, var(--grey) 0%, var(--black) 100%); padding:.75rem 0; overflow:hidden; display:flex; box-shadow:0 4px 15px rgba(0,0,0,.2); }
+.marquee-inner { display:flex; animation:marquee 25s linear infinite; white-space:nowrap; }
+.marquee-inner span { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--white); letter-spacing:3px; padding:0 2rem; }
+.marquee-inner span::after { content:' ·'; opacity:.35; }
+@keyframes marquee { to { transform:translateX(-50%); } }
+
+/* ── WEBSITE URL BADGE ── */
+.website-badge { position:fixed; bottom:2rem; left:2rem; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); padding:.8rem 1.2rem; border-radius:8px; z-index:100; font-size:.7rem; letter-spacing:1px; color:rgba(255,255,255,.8); backdrop-filter:blur(10px); transition:all .3s; }
+.website-badge:hover { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.3); }
+.website-badge a { color:var(--white); text-decoration:none; font-weight:600; }
+.website-badge a:hover { text-decoration:underline; }
+
+/* ── COMMON SECTION ── */
+section { padding:6rem 3rem; }
+.section-label { font-size:.62rem; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:1rem; margin-bottom:.8rem; }
+.section-label::before { content:''; width:28px; height:1px; background:var(--muted); }
+.section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.8rem,5vw,4.5rem); line-height:.95; letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.4); }
+.section-title .outline { -webkit-text-stroke:1px rgba(255,255,255,.2); color:transparent; }
+
+/* ── ABOUT ── */
+#about { 
+  background:linear-gradient(135deg, rgba(10,10,10,.85) 0%, rgba(10,10,10,.65) 100%), url('./images/gym-floor-closeup.jpg') center/cover fixed;
+  background-color:var(--grey);
+}
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; max-width:1200px; margin:0 auto; }
+.about-images { position:relative; height:560px; }
+.about-img-main { position:absolute; top:0; left:0; width:75%; height:85%; object-fit:cover; box-shadow:0 8px 30px rgba(0,0,0,.5); border-radius:8px; }
+.about-img-accent { position:absolute; bottom:0; right:0; width:55%; height:55%; object-fit:cover; border:4px solid var(--grey); box-shadow:0 6px 25px rgba(0,0,0,.4); border-radius:8px; }
+.about-img-badge { position:absolute; top:48%; left:52%; transform:translate(-50%,-50%); background:var(--white); color:var(--black); padding:1.2rem 1.5rem; text-align:center; z-index:2; font-family:'Bebas Neue',sans-serif; box-shadow:0 6px 25px rgba(0,0,0,.5); border-radius:4px; }
+.about-img-badge .big { font-size:2.8rem; line-height:1; }
+.about-img-badge .small { font-size:.65rem; letter-spacing:2px; font-family:'Barlow',sans-serif; font-weight:700; text-transform:uppercase; }
+.about-content p { font-size:1rem; line-height:1.85; color:rgba(255,255,255,.8); margin-bottom:1.4rem; font-weight:300; }
+.about-content p strong { color:var(--white); font-weight:700; }
+.about-trainer { display:flex; align-items:center; gap:1rem; margin-top:2rem; padding:1.2rem; background:rgba(255,255,255,.08); border-left:2px solid var(--white); border-radius:4px; }
+.trainer-avatar { width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,.15); border:2px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:1.4rem; flex-shrink:0; }
+.trainer-name { font-weight:700; font-size:1rem; }
+.trainer-title { font-size:.7rem; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
+
+/* ── PROGRAMS ── */
+#programs { 
+  background:linear-gradient(135deg, rgba(10,10,10,.9) 0%, rgba(10,10,10,.7) 100%), url('./images/trainer-action.jpg') center/cover fixed;
+  background-color:var(--black);
+}
+.programs-header { max-width:1200px; margin:0 auto; }
+.programs-tabs { display:flex; margin:2rem auto 3rem; border-bottom:1px solid rgba(255,255,255,.08); overflow-x:auto; max-width:1200px; }
+.tab-btn { padding:.8rem 1.5rem; background:none; border:none; color:var(--muted); font-family:'Barlow',sans-serif; font-size:.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; cursor:pointer; position:relative; transition:color .2s; white-space:nowrap; }
+.tab-btn.active { color:var(--white); }
+.tab-btn.active::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:2px; background:var(--white); }
+.tab-btn:hover { color:var(--white); }
+.programs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:1px; max-width:1200px; margin:0 auto; background:rgba(255,255,255,.04); }
+.program-card { background:var(--black); position:relative; overflow:hidden; padding:2rem; cursor:pointer; transition:all .3s; display:none; box-shadow:0 4px 15px rgba(0,0,0,.3); }
+.program-card.visible { display:block; }
+.program-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:var(--white); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+.program-card:hover { background:var(--grey); transform:translateY(-4px); box-shadow:0 6px 25px rgba(0,0,0,.4); border-left:3px solid white; }
+.program-card:hover::before { transform:scaleX(1); }
+.program-name { font-family:'Barlow Condensed',sans-serif; font-size:1.25rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.5rem; }
+.program-desc { font-size:.83rem; color:rgba(255,255,255,.7); line-height:1.6; margin-bottom:1rem; }
+.program-meta { display:flex; gap:.8rem; }
+.program-tag { font-size:.62rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); border:1px solid rgba(255,255,255,.12); padding:.2rem .6rem; }
+
+/* ── CORPORATE ── */
+#corporate { 
+  background:linear-gradient(135deg, rgba(10,10,10,.88) 0%, rgba(10,10,10,.68) 100%), url('./images/team-workout.jpg') center/cover fixed;
+  background-color:var(--grey);
+  position:relative;
+  overflow:hidden;
+}
+#corporate::before { content:'CORPORATE'; position:absolute; right:-8%; top:50%; transform:translateY(-50%) rotate(90deg); font-family:'Bebas Neue',sans-serif; font-size:14rem; color:rgba(255,255,255,.02); pointer-events:none; white-space:nowrap; }
+.corporate-inner { max-width:1200px; margin:0 auto; }
+.corporate-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+.corporate-benefits { display:grid; grid-template-columns:1fr 1fr; gap:1px; margin-top:2rem; background:rgba(255,255,255,.04); }
+.benefit-item { padding:1.5rem; background:var(--grey); transition:all .2s; box-shadow:0 2px 10px rgba(0,0,0,.2); }
+.benefit-item:hover { background:var(--grey2); transform:translateY(-2px); box-shadow:0 4px 15px rgba(0,0,0,.3); border-left:3px solid white; }
+.benefit-title { font-size:.88rem; font-weight:700; margin-bottom:.3rem; }
+.benefit-desc { font-size:.78rem; color:rgba(255,255,255,.7); line-height:1.5; }
+.corporate-right p { font-size:1rem; line-height:1.85; color:rgba(255,255,255,.8); font-weight:300; margin-bottom:1.5rem; }
+.discount-badge { background:var(--white); color:var(--black); display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 1.5rem; margin-bottom:1.8rem; font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px; box-shadow:0 4px 15px rgba(255,255,255,.2); }
+.pdf-embed-container { margin:2rem 0; padding:1.5rem; background:rgba(255,255,255,.05); border-radius:8px; border:1px solid rgba(255,255,255,.1); }
+.pdf-embed-container iframe { width:100%; height:600px; border-radius:4px; border:none; box-shadow:0 4px 20px rgba(0,0,0,.3); }
+.pdf-download-btn { display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 1.5rem; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:var(--white); text-decoration:none; margin-bottom:1.5rem; border-radius:4px; transition:all .2s; cursor:pointer; font-weight:600; }
+.pdf-download-btn:hover { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.3); }
+.clients-section { margin-top:2.5rem; }
+.clients-label { font-size:.62rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:1.2rem; }
+.clients-grid { display:flex; flex-wrap:wrap; gap:.6rem; }
+.client-chip { padding:.45rem .9rem; border:1px solid rgba(255,255,255,.1); font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); transition:all .2s; cursor:pointer; border-radius:4px; }
+.client-chip:hover { border-color:rgba(255,255,255,.4); color:var(--white); background:rgba(255,255,255,.05); }
+
+/* ── PRICING / RATE CARD ── */
+#pricing { 
+  background:linear-gradient(135deg, rgba(10,10,10,.85) 0%, rgba(10,10,10,.65) 100%), url('./images/pricing-bg.jpg') center/cover fixed;
+  background-color:var(--grey);
+}
+.pricing-inner { max-width:1300px; margin:0 auto; }
+.pricing-header { text-align:center; margin-bottom:4rem; }
+.pricing-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-bottom:3rem; }
+.pricing-column { background:rgba(255,255,255,.04); padding:2.5rem; border-radius:8px; border:1px solid rgba(255,255,255,.08); }
+.pricing-column-title { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; margin-bottom:2rem; padding-bottom:1.5rem; border-bottom:1px solid rgba(255,255,255,.15); color:var(--white); }
+.pricing-item { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,.08); }
+.pricing-item-name { font-size:.9rem; font-weight:600; color:rgba(255,255,255,.8); letter-spacing:.5px; }
+.pricing-item-price { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--white); font-weight:700; }
+.pricing-highlight { background:rgba(74,222,128,.08); border-left:3px solid var(--success); padding:1.5rem; margin:2rem 0; border-radius:4px; }
+.pricing-highlight-title { font-weight:700; margin-bottom:.5rem; color:var(--white); }
+.pricing-highlight-text { font-size:.85rem; color:rgba(255,255,255,.7); line-height:1.6; }
+.pricing-cta { text-align:center; margin-top:2.5rem; }
+.pricing-contact-btn { background:var(--white); color:var(--black); padding:.9rem 2.2rem; font-size:.85rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; border:none; cursor:pointer; transition:all .2s; box-shadow:0 4px 15px rgba(255,255,255,.2); display:inline-block; text-decoration:none; }
+.pricing-contact-btn:hover { background:var(--muted); transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,255,255,.3); }
+.pricing-note { text-align:center; font-size:.75rem; color:var(--muted); margin-top:2rem; letter-spacing:1px; text-transform:uppercase; }
+
+/* ── FACILITIES ── */
+#facilities { 
+  background:linear-gradient(135deg, rgba(10,10,10,.8) 0%, rgba(10,10,10,.6) 100%), url('./images/diverse-workouts.jpg') center/cover fixed;
+  background-color:var(--black);
+}
+.facilities-inner { max-width:1200px; margin:0 auto; }
+.facilities-intro { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-bottom:3rem; align-items:end; }
+.facilities-desc { font-size:1rem; line-height:1.8; color:rgba(255,255,255,.8); font-weight:300; }
+.facilities-gallery { display:grid; grid-template-columns:2fr 1fr 1fr; grid-template-rows:250px 250px; gap:2px; }
+.gallery-item { overflow:hidden; position:relative; cursor:pointer; background:#0a0a0a; }
+.gallery-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.65); transition:all .4s; }
+.gallery-item video { width:100%; height:100%; object-fit:cover; filter:brightness(.65); transition:all .4s; }
+.gallery-item:hover img,
+.gallery-item:hover video { transform:scale(1.04); filter:brightness(.85); }
+.gallery-item.tall { grid-row:1/3; }
+.gallery-play-btn { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:60px; height:60px; background:rgba(255,255,255,.9); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .3s; z-index:10; }
+.gallery-play-btn::after { content:'▶'; color:var(--black); font-size:24px; margin-left:4px; }
+.gallery-item:hover .gallery-play-btn { background:var(--white); transform:translate(-50%,-50%) scale(1.1); }
+.gallery-item-label { position:absolute; bottom:0; left:0; right:0; padding:.8rem 1rem; background:linear-gradient(transparent,rgba(0,0,0,.85)); font-size:.68rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; opacity:0; transition:opacity .3s; }
+.gallery-item:hover .gallery-item-label { opacity:1; }
+
+/* ── WORKOUT VIDEOS ── */
+.workout-videos-section { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1.5rem; margin-top:2rem; }
+.workout-card { position:relative; overflow:hidden; cursor:pointer; border-radius:8px; aspect-ratio:16/9; background:#0a0a0a; box-shadow:0 4px 20px rgba(0,0,0,.3); transition:all .3s; }
+.workout-card img,
+.workout-card video { width:100%; height:100%; object-fit:cover; filter:brightness(.6); transition:all .4s; }
+.workout-card:hover img,
+.workout-card:hover video { transform:scale(1.05); filter:brightness(.75); }
+.workout-play-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.3); opacity:0; transition:opacity .3s; z-index:5; }
+.workout-card:hover .workout-play-overlay { opacity:1; }
+.play-btn-large { width:70px; height:70px; background:rgba(255,255,255,.9); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all .3s; }
+.play-btn-large::after { content:'▶'; color:var(--black); font-size:28px; margin-left:4px; }
+.workout-card:hover .play-btn-large { background:var(--white); transform:scale(1.15); }
+.workout-title { position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(transparent,rgba(0,0,0,.9)); color:var(--white); font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:.75rem; }
+
+/* ── VIDEO MODAL ── */
+.video-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.95); z-index:5000; align-items:center; justify-content:center; backdrop-filter:blur(5px); }
+.video-modal.active { display:flex; }
+.video-modal-content { position:relative; width:90%; max-width:900px; aspect-ratio:16/9; }
+.video-modal-content video { width:100%; height:100%; border-radius:8px; box-shadow:0 10px 50px rgba(0,0,0,.8); }
+.modal-close-btn { position:absolute; top:-50px; right:0; background:none; border:none; color:var(--white); font-size:2rem; cursor:pointer; transition:color .2s; z-index:10; }
+.modal-close-btn:hover { color:var(--muted); }
+
+/* ── KIDS ── */
+#kids { 
+  background:linear-gradient(135deg, rgba(10,10,10,.85) 0%, rgba(10,10,10,.65) 100%), url('./images/kids-class.jpg') center/cover fixed;
+  background-color:var(--grey);
+}
+.kids-inner { max-width:1200px; margin:0 auto; }
+.kids-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; margin-top:2rem; }
+.kids-classes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:rgba(255,255,255,.04); }
+.kids-class { padding:1.8rem 1rem; text-align:center; background:var(--grey); transition:all .3s; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.2); }
+.kids-class:hover { background:var(--grey2); transform:translateY(-4px); box-shadow:0 4px 15px rgba(0,0,0,.3); border-top:3px solid white; }
+.kids-class-name { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,.8); transition:color .2s; }
+.kids-class:hover .kids-class-name { color:var(--white); }
+.kids-content p { font-size:1rem; line-height:1.85; color:rgba(255,255,255,.8); font-weight:300; margin-bottom:1.5rem; }
+
+/* ── QUOTE ── */
+.quote-section { background:var(--white); padding:5rem 3rem; text-align:center; box-shadow:0 -4px 20px rgba(0,0,0,.2); }
+.quote-mark { font-family:'Bebas Neue',sans-serif; font-size:5rem; color:rgba(0,0,0,.07); line-height:1; margin-bottom:-1rem; }
+.quote-text { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,3.5vw,3rem); color:var(--black); letter-spacing:1px; line-height:1.2; max-width:900px; margin:0 auto 1.2rem; }
+.quote-attr { font-size:.72rem; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:rgba(0,0,0,.35); }
+
+/* ── CONTACT ── */
+#contact { 
+  background:linear-gradient(135deg, rgba(10,10,10,.9) 0%, rgba(10,10,10,.7) 100%), url('./images/transformation-moment.jpg') center/cover fixed;
+  background-color:var(--black);
+}
+.contact-inner { max-width:1200px; margin:0 auto; }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+.contact-info p { font-size:1rem; color:rgba(255,255,255,.8); line-height:1.8; margin-bottom:2rem; font-weight:300; }
+.contact-items { display:flex; flex-direction:column; gap:1.5rem; }
+.contact-item { display:flex; align-items:flex-start; gap:1rem; }
+.contact-item-icon { width:38px; height:38px; border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; border-radius:4px; }
+.contact-item-label { font-size:.62rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.25rem; }
+.contact-item-value { font-size:.93rem; color:var(--white); }
+.contact-item-value a { color:var(--white); text-decoration:none; transition:color .2s; }
+.contact-item-value a:hover { color:var(--muted); }
+.form-group { margin-bottom:1.2rem; }
+.form-group label { display:block; font-size:.62rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
+.form-group input,
+.form-group select,
+.form-group textarea { width:100%; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:var(--white); padding:.9rem 1rem; font-family:'Barlow',sans-serif; font-size:.9rem; outline:none; transition:all .2s; resize:none; cursor:pointer; -webkit-appearance:none; border-radius:4px; }
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.15); box-shadow:0 0 15px rgba(255,255,255,.2); }
+.form-group select option { background:var(--grey); color:var(--white); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.form-note { font-size:.7rem; color:var(--muted); margin-top:.3rem; letter-spacing:.5px; }
+
+/* ── SUCCESS MESSAGE ── */
+.success-message { position:fixed; top:20px; right:20px; background:var(--white); color:var(--black); padding:1.5rem; border-radius:8px; font-weight:600; z-index:10000; animation:slideIn .3s ease; box-shadow:0 4px 20px rgba(255,255,255,.3); min-width:300px; }
+.success-message.show { animation:slideIn .4s ease; }
+.success-message .check-icon { font-size:1.5rem; margin-bottom:.5rem; }
+.success-message .message-text { margin-bottom:1rem; line-height:1.5; }
+.success-message-actions { display:flex; gap:.8rem; }
+.success-action-btn { padding:.6rem 1rem; border:none; border-radius:4px; font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; transition:all .2s; }
+.success-action-btn.whatsapp { background:var(--success); color:var(--black); font-weight:800; }
+.success-action-btn.whatsapp:hover { background:#22c55e; transform:scale(1.02); }
+.success-action-btn.close { background:rgba(0,0,0,.05); color:var(--black); border:1px solid rgba(0,0,0,.1); }
+.success-action-btn.close:hover { background:rgba(0,0,0,.1); }
+@keyframes slideIn { from { transform:translateX(400px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+
+/* ── FOOTER ── */
+footer { background:#050505; padding:3rem; border-top:1px solid rgba(255,255,255,.04); box-shadow:0 -4px 20px rgba(0,0,0,.3); }
+.footer-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:3rem; margin-bottom:2.5rem; }
+.footer-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:3px; margin-bottom:1rem; }
+.footer-brand p { font-size:.83rem; color:rgba(255,255,255,.7); line-height:1.7; max-width:280px; }
+.footer-website { font-size:.75rem; color:var(--muted); margin-top:1.5rem; letter-spacing:1px; }
+.footer-website a { color:var(--white); text-decoration:none; font-weight:600; transition:color .2s; }
+.footer-website a:hover { color:var(--success); }
+.footer-social { display:flex; gap:.7rem; margin-top:1rem; }
+.social-btn { width:34px; height:34px; border:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:700; text-decoration:none; color:var(--muted); text-transform:uppercase; letter-spacing:1px; transition:all .2s; cursor:pointer; border-radius:4px; }
+.social-btn:hover { border-color:rgba(255,255,255,.4); color:var(--white); background:rgba(255,255,255,.05); }
+.footer-col h4 { font-size:.62rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:1.2rem; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+.footer-col ul li a { font-size:.83rem; color:rgba(255,255,255,.7); text-decoration:none; transition:color .2s; cursor:pointer; }
+.footer-col ul li a:hover { color:var(--white); }
+.footer-bottom { max-width:1200px; margin:0 auto; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,.05); display:flex; justify-content:space-between; align-items:center; }
+.footer-bottom p { font-size:.72rem; color:rgba(255,255,255,.6); }
+.footer-tagline { font-family:'Bebas Neue',sans-serif; font-size:.85rem; letter-spacing:4px; color:rgba(255,255,255,.2); }
+
+/* ── ANIMATIONS ── */
+.fade-up { opacity:0; transform:translateY(24px); transition:opacity .7s,transform .7s; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav { padding:1rem 1.5rem; }
+  .nav-links,.nav-cta { display:none; }
+  .hamburger { display:flex; }
+  #hero { grid-template-columns:1fr; min-height:auto; }
+  .hero-right { display:none; }
+  .hero-left { padding:3rem 1.5rem; }
+  .about-grid,.corporate-grid,.kids-grid,.contact-grid,.facilities-intro { grid-template-columns:1fr; gap:2rem; }
+  .about-images { height:300px; }
+  .facilities-gallery { grid-template-columns:1fr 1fr; grid-template-rows:180px 180px; }
+  .gallery-item.tall { grid-row:auto; }
+  .pricing-grid { grid-template-columns:1fr; }
+  .footer-inner { grid-template-columns:1fr; gap:2rem; }
+  section { padding:4rem 1.5rem; }
+  .corporate-benefits { grid-template-columns:1fr; }
+  .form-row { grid-template-columns:1fr; }
+  footer { padding:2rem 1.5rem; }
+  .footer-bottom { flex-direction:column; gap:.5rem; text-align:center; }
+  .workout-videos-section { grid-template-columns:1fr; }
+  .pdf-embed-container iframe { height:400px; }
+  .success-message { min-width:280px; right:10px; left:10px; top:60px; }
+  .success-message-actions { flex-direction:column; }
+  .website-badge { bottom:auto; top:100px; left:1rem; font-size:.65rem; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile Navigation">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#programs" onclick="toggleMenu()">Programs</a>
+  <a href="#corporate" onclick="toggleMenu()">Corporate</a>
+  <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="#kids" onclick="toggleMenu()">Kids</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar" role="navigation" aria-label="Main Navigation">
+  <a href="#" class="nav-logo">FITWITANDI</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#corporate">Corporate</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#facilities">Facilities</a></li>
+    <li><a href="#kids">Kids</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="scrollToContact()">Join Now</button>
+  <button class="hamburger" onclick="toggleMenu()" id="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero" aria-labelledby="hero-title">
+  <video class="hero-video-bg" autoplay muted loop playsinline>
+    <source src="./videos/hero-background.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-overlay"></div>
+  <div class="hero-left">
+    <div class="hero-badge">Shiashie, Accra &nbsp;·&nbsp; Now Open</div>
+    <h1 class="hero-title" id="hero-title">TRAIN<br>TRANSFORM<br><span class="outline">THRIVE</span></h1>
+    <p class="hero-sub">Accra's premier fitness destination. <em>Expert-led training, world-class facilities,</em> and a community built on real results.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start Your Journey</a>
+      <a href="#programs" class="btn-outline">View Programs</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Members</div>
+      </div>
+      <div>
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Corporate Clients</div>
+      </div>
+      <div>
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Class Types</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator"><div class="scroll-line"></div>Scroll to explore</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-label="Featured Classes">
+  <div class="marquee-inner">
+    <span>HIIT</span><span>YOGA</span><span>PILATES</span><span>SPINNING</span>
+    <span>KICKBOXING</span><span>DANCE FITNESS</span><span>STEP AEROBICS</span><span>CIRCUIT TRAINING</span>
+    <span>GYMNASTICS</span><span>KARATE</span><span>BALLET</span><span>PERSONAL TRAINING</span>
+    <span>HIIT</span><span>YOGA</span><span>PILATES</span><span>SPINNING</span>
+    <span>KICKBOXING</span><span>DANCE FITNESS</span><span>STEP AEROBICS</span><span>CIRCUIT TRAINING</span>
+    <span>GYMNASTICS</span><span>KARATE</span><span>BALLET</span><span>PERSONAL TRAINING</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" aria-labelledby="about-title">
+  <div class="about-grid">
+    <div class="about-images fade-up">
+      <img class="about-img-main" src="./images/about-accent.jpg" alt="Professional gym training area">
+      <div class="about-img-badge"><div class="big">10+</div><div class="small">Years<br>Experience</div></div>
+    </div>
+    <div class="about-content fade-up">
+      <div class="section-label">Who We Are</div>
+      <h2 class="section-title" id="about-title" style="margin-bottom:1.5rem">BUILT FOR<br><span class="outline">REAL RESULTS</span></h2>
+      <p>FitWitAndi Gym is dedicated to <strong>empowering individuals to achieve holistic transformation</strong> — guiding them to build strength, mobility, and a sustainable healthy lifestyle.</p>
+      <p>Located at Signature Apartments, Shiashie, our world-class facility brings together certified trainers, premium equipment, and a community that shows up every day.</p>
+      <p>From personal training to group classes, corporate wellness to kids programs, <strong>we meet you where you are</strong> and take you where you want to go.</p>
+      <div class="about-trainer">
+        <div class="trainer-avatar">A</div>
+        <div>
+          <div class="trainer-name">Andrina</div>
+          <div class="trainer-title">Founder & Head Trainer · FitWitAndi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs" aria-labelledby="programs-title">
+  <div class="programs-header">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title" id="programs-title">OUR <span class="outline">PROGRAMS</span></h2>
+  </div>
+  <div class="programs-tabs" role="tablist">
+    <button class="tab-btn active" onclick="filterPrograms('all',this)" role="tab" aria-selected="true">All Programs</button>
+    <button class="tab-btn" onclick="filterPrograms('adult',this)" role="tab" aria-selected="false">Adult Classes</button>
+    <button class="tab-btn" onclick="filterPrograms('kids',this)" role="tab" aria-selected="false">Kids Classes</button>
+    <button class="tab-btn" onclick="filterPrograms('training',this)" role="tab" aria-selected="false">Personal Training</button>
+  </div>
+  <div class="programs-grid" id="programsGrid">
+    <div class="program-card visible" data-cat="adult"><div class="program-name">HIIT</div><p class="program-desc">High-intensity interval training to torch calories and build explosive power. Maximum results in minimum time.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Circuit Training</div><p class="program-desc">Full-body conditioning through timed stations. Build strength, endurance, and agility simultaneously.</p><div class="program-meta"><span class="program-tag">50 min</span><span class="program-tag">Intermediate</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Yoga</div><p class="program-desc">Mindful movement and breathwork to restore balance, flexibility, and calm the mind.</p><div class="program-meta"><span class="program-tag">60 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Pilates</div><p class="program-desc">Core-focused training that improves posture, balance, and functional strength with precision.</p><div class="program-meta"><span class="program-tag">50 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Spinning</div><p class="program-desc">High-energy indoor cycling to electrifying music. Build cardio strength and burn serious calories.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Kickboxing</div><p class="program-desc">Martial arts meets cardio for a full-body workout. Empowering, stress-busting, and incredibly fun.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Dance Fitness</div><p class="program-desc">Move to the rhythm and lose yourself in the beat. Cardio that never feels like exercise.</p><div class="program-meta"><span class="program-tag">60 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="adult"><div class="program-name">Step Aerobics</div><p class="program-desc">Classic aerobics with modern choreography for coordination, cardio health, and lower body toning.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">All Levels</span></div></div>
+    <div class="program-card visible" data-cat="kids"><div class="program-name">Kids Gymnastics</div><p class="program-desc">Build flexibility, coordination, and confidence through age-appropriate gymnastics for young bodies.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">Ages 4–12</span></div></div>
+    <div class="program-card visible" data-cat="kids"><div class="program-name">Kids Karate</div><p class="program-desc">Discipline, focus, and self-defence skills in a fun and structured martial arts environment.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">Ages 5–14</span></div></div>
+    <div class="program-card visible" data-cat="kids"><div class="program-name">Kids Ballet</div><p class="program-desc">Grace, posture, and artistic expression through classical ballet for young dancers.</p><div class="program-meta"><span class="program-tag">45 min</span><span class="program-tag">Ages 4–12</span></div></div>
+    <div class="program-card visible" data-cat="training"><div class="program-name">Personal Training</div><p class="program-desc">One-on-one sessions with certified trainers, tailored precisely to your goals, schedule, and body.</p><div class="program-meta"><span class="program-tag">60 min</span><span class="program-tag">All Levels</span></div></div>
+  </div>
+</section>
+
+<!-- CORPORATE -->
+<section id="corporate" aria-labelledby="corporate-title">
+  <div class="corporate-inner">
+    <div class="section-label">For Organizations</div>
+    <h2 class="section-title" id="corporate-title" style="margin-bottom:3rem">CORPORATE <span class="outline">WELLNESS</span><br>PROGRAM</h2>
+    <div class="corporate-grid">
+      <div>
+        <p style="color:rgba(255,255,255,.8);font-size:1rem;line-height:1.85;font-weight:300;margin-bottom:2rem">Investing in employee wellness is investing in your greatest asset — your people. FitWitAndi brings structured wellness programs directly to your team, on-site or at our facility.</p>
+        <div class="corporate-benefits">
+          <div class="benefit-item fade-up"><div class="benefit-title">Boost Productivity</div><div class="benefit-desc">Healthier employees are more focused and energized at work.</div></div>
+          <div class="benefit-item fade-up"><div class="benefit-title">Reduce Health Costs</div><div class="benefit-desc">Proactive wellness lowers illness rates and expenses.</div></div>
+          <div class="benefit-item fade-up"><div class="benefit-title">Improve Morale</div><div class="benefit-desc">Teams that train together bond and collaborate better.</div></div>
+          <div class="benefit-item fade-up"><div class="benefit-title">Stress Management</div><div class="benefit-desc">Movement and mindfulness tools for a calmer workplace.</div></div>
+          <div class="benefit-item fade-up"><div class="benefit-title">Team Building</div><div class="benefit-desc">Group fitness events strengthen company culture.</div></div>
+          <div class="benefit-item fade-up"><div class="benefit-title">Attract Talent</div><div class="benefit-desc">Wellness benefits help recruit and retain top people.</div></div>
+        </div>
+      </div>
+      <div class="corporate-right">
+        <div class="discount-badge">25% Discount for Groups of 5+</div>
+        <p>Our services include gym membership access, group fitness classes, body composition analysis, health education talks with our certified nutritionist and psychologist, CPR & first aid training, desk stretches, chair massages, and meditation sessions.</p>
+        <a href="#contact" class="btn-primary" style="margin-bottom:2.5rem;display:inline-block">Get a Corporate Quote</a>
+        
+        <div style="margin-top:2rem;">
+          <a href="./documents/corporate-wellness.pdf" download class="pdf-download-btn">Download Corporate Wellness PDF</a>
+          <div class="pdf-embed-container">
+            <iframe src="./documents/corporate-wellness.pdf" title="Corporate Wellness Program Document"></iframe>
+          </div>
+        </div>
+        
+        <div class="clients-section">
+          <div class="clients-label">Organizations We've Worked With</div>
+          <div class="clients-grid">
+            <div class="client-chip">Stanbic Bank</div>
+            <div class="client-chip">British High Commission</div>
+            <div class="client-chip">Unilever Ghana</div>
+            <div class="client-chip">General Electric</div>
+            <div class="client-chip">Nestlé Ghana</div>
+            <div class="client-chip">Capital Bank</div>
+            <div class="client-chip">Puma Energy</div>
+            <div class="client-chip">Cirrus Oil</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING / RATE CARD -->
+<section id="pricing" aria-labelledby="pricing-title">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <div class="section-label">Membership Plans</div>
+      <h2 class="section-title" id="pricing-title" style="margin-bottom:2rem">PRICING & <span class="outline">RATE CARD</span></h2>
+      <p style="color:rgba(255,255,255,.8); font-size:1rem; max-width:800px; margin:0 auto; line-height:1.8;">Flexible membership options designed to fit every budget and lifestyle. Choose your plan and start your transformation today.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Column 1: Unlimited & Gym Only -->
+      <div class="pricing-column">
+        <div class="pricing-column-title">Unlimited Membership<br><span style="font-size:0.8rem; color:rgba(255,255,255,.6); font-weight:400;">(Gym + Classes)</span></div>
+        <div class="pricing-item">
+          <span class="pricing-item-name">1 Month</span>
+          <span class="pricing-item-price">GHS 1,500</span>
+        </div>
+        <div class="pricing-item">
+          <span class="pricing-item-name">3 Months</span>
+          <span class="pricing-item-price">GHS 3,500</span>
+        </div>
+        <div class="pricing-item">
+          <span class="pricing-item-name">6 Months</span>
+          <span class="pricing-item-price">GHS 6,000</span>
+        </div>
+        <div class="pricing-item">
+          <span class="pricing-item-name">1 Year</span>
+          <span class="pricing-item-price">GHS 10,000</span>
+        </div>
+        
+        <div style="border-top: 1px solid rgba(255,255,255,.15); margin:2rem 0; padding-top:2rem;">
+          <div class="pricing-column-title" style="margin:0 0 1.5rem 0; font-size:1.3rem;">Gym Only</div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">Day Pass</span>
+            <span class="pricing-item-price">GHS 150</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">1 Week</span>
+            <span class="pricing-item-price">GHS 450</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">1 Month</span>
+            <span class="pricing-item-price">GHS 1,100</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">3 Months</span>
+            <span class="pricing-item-price">GHS 2,800</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">6 Months</span>
+            <span class="pricing-item-price">GHS 5,000</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">1 Year</span>
+            <span class="pricing-item-price">GHS 8,000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Personal Training & VIP -->
+      <div class="pricing-column">
+        <div class="pricing-column-title">Personal Training</div>
+        <div class="pricing-item">
+          <span class="pricing-item-name">1 Session</span>
+          <span class="pricing-item-price">GHS 300</span>
+        </div>
+        <div class="pricing-item">
+          <span class="pricing-item-name">12 Sessions</span>
+          <span class="pricing-item-price">GHS 3,000</span>
+        </div>
+        
+        <div class="pricing-highlight">
+          <div class="pricing-highlight-title">VIP Membership</div>
+          <div class="pricing-highlight-text">Unlimited gym + classes + customized meal plan</div>
+          <div style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--white); margin-top:1rem;">GHS 2,000 / mo</div>
+        </div>
+
+        <div style="border-top: 1px solid rgba(255,255,255,.15); margin:2rem 0; padding-top:2rem;">
+          <div class="pricing-column-title" style="margin:0 0 1.5rem 0; font-size:1.3rem;">Class Access</div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">1 Class</span>
+            <span class="pricing-item-price">GHS 150</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">12 Class Bundle</span>
+            <span class="pricing-item-price">GHS 1,200</span>
+          </div>
+          <div class="pricing-item">
+            <span class="pricing-item-name">24 Class Bundle</span>
+            <span class="pricing-item-price">GHS 2,000</span>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid rgba(255,255,255,.15); margin:2rem 0; padding-top:2rem;">
+          <div class="pricing-column-title" style="margin:0 0 1.5rem 0; font-size:1.3rem;">Kids Classes</div>
+          <p style="color:rgba(255,255,255,.7); font-size:.85rem; line-height:1.6;">Gymnastics · Ballet · Karate</p>
+          <div class="pricing-item" style="margin-top:1rem;">
+            <span class="pricing-item-name">Per Class</span>
+            <span class="pricing-item-price">Contact us</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-note">💪 All membership fees include access to world-class facilities, expert trainers & community support</div>
+
+    <div class="pricing-cta">
+      <a href="#contact" class="pricing-contact-btn">Get Started Today</a>
+    </div>
+  </div>
+</section>
+
+<!-- FACILITIES -->
+<section id="facilities" aria-labelledby="facilities-title">
+  <div class="facilities-inner">
+    <div class="facilities-intro">
+      <div>
+        <div class="section-label">Our Space</div>
+        <h2 class="section-title" id="facilities-title">WORLD-CLASS<br><span class="outline">FACILITIES</span></h2>
+      </div>
+      <p class="facilities-desc">State-of-the-art equipment across spacious training floors — designed to inspire peak performance. Every detail at FitWitAndi is built around your best workout.</p>
+    </div>
+    <div class="facilities-gallery">
+      <div class="gallery-item tall" onclick="playVideo('./videos/facility-tour-main.mp4')">
+        <img src="./images/facility-main.jpg" alt="Main training floor">
+        <div class="gallery-play-btn"></div>
+        <div class="gallery-item-label">Main Training Floor</div>
+      </div>
+      <div class="gallery-item" onclick="playVideo('./videos/cardio-zone.mp4')">
+        <img src="./images/cardio-zone.jpg" alt="Cardio zone with treadmills and bikes">
+        <div class="gallery-play-btn"></div>
+        <div class="gallery-item-label">Cardio Zone</div>
+      </div>
+      <div class="gallery-item" onclick="playVideo('./videos/group-studio.mp4')">
+        <img src="./images/group-studio.jpg" alt="Group fitness studio">
+        <div class="gallery-play-btn"></div>
+        <div class="gallery-item-label">Group Studio</div>
+      </div>
+      <div class="gallery-item" onclick="playVideo('./videos/free-weights.mp4')">
+        <img src="./images/free-weights.jpg" alt="Free weights and dumbbells area">
+        <div class="gallery-play-btn"></div>
+        <div class="gallery-item-label">Free Weights Area</div>
+      </div>
+      <div class="gallery-item" onclick="playVideo('./videos/yoga-studio.mp4')">
+        <img src="./images/yoga-studio.jpg" alt="Yoga and mind-body studio">
+        <div class="gallery-play-btn"></div>
+        <div class="gallery-item-label">Mind & Body Studio</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKOUT VIDEOS -->
+<section id="workouts" style="background:linear-gradient(135deg, rgba(10,10,10,.85) 0%, rgba(10,10,10,.65) 100%), url('./images/diverse-workouts.jpg') center/cover fixed; background-color:var(--grey);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">Get Fit With Us</div>
+    <h2 class="section-title">WORKOUT <span class="outline">VIDEOS</span></h2>
+    <div class="workout-videos-section">
+      <div class="workout-card" onclick="playVideo('./videos/hiit-workout.mp4')">
+        <img src="./images/workout-hiit.jpg" alt="HIIT Workout">
+        <div class="workout-play-overlay">
+          <div class="play-btn-large"></div>
+        </div>
+        <div class="workout-title">HIIT Workout</div>
+      </div>
+      <div class="workout-card" onclick="playVideo('./videos/yoga-session.mp4')">
+        <img src="./images/workout-yoga.jpg" alt="Yoga Session">
+        <div class="workout-play-overlay">
+          <div class="play-btn-large"></div>
+        </div>
+        <div class="workout-title">Yoga Session</div>
+      </div>
+      <div class="workout-card" onclick="playVideo('./videos/ballot-training.mp4')">
+        <img src="./images/workout-ballot.jpg" alt="Ballot Training">
+        <div class="workout-play-overlay">
+          <div class="play-btn-large"></div>
+        </div>
+        <div class="workout-title">Ballot Training</div>
+      </div>
+      <div class="workout-card" onclick="playVideo('./videos/pilates-class.mp4')">
+        <img src="./images/workout-pilates.jpg" alt="Pilates Class">
+        <div class="workout-play-overlay">
+          <div class="play-btn-large"></div>
+        </div>
+        <div class="workout-title">Pilates Class</div>
+      </div>
+      <div class="workout-card" onclick="playVideo('./videos/kickboxing.mp4')">
+        <img src="./images/workout-kickboxing.jpg" alt="Kickboxing">
+        <div class="workout-play-overlay">
+          <div class="play-btn-large"></div>
+        </div>
+        <div class="workout-title">Kickboxing</div>
+      </div>
+      <div class="workout-card" onclick="playVideo('./videos/dance-fitness.mp4')">
+        <img src="./images/workout-dance.jpg" alt="Dance Fitness">
+        <div class="workout-play-overlay">
+          <div class="play-btn-large"></div>
+        </div>
+        <div class="workout-title">Dance Fitness</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section" role="region" aria-label="Inspirational Quote">
+  <div class="quote-mark" aria-hidden="true">"</div>
+  <p class="quote-text">WHEN HEALTH IS ABSENT, WISDOM CANNOT REVEAL ITSELF, STRENGTH CANNOT FIGHT, WEALTH BECOMES USELESS AND INTELLIGENCE CANNOT BE APPLIED</p>
+  <p class="quote-attr">— Herophilus</p>
+</div>
+
+<!-- CONTACT -->
+<section id="contact" aria-labelledby="contact-title">
+  <div class="contact-inner">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title" id="contact-title" style="margin-bottom:3rem">START YOUR<br><span class="outline">JOURNEY</span></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Whether you're joining as an individual, enrolling your kids, or setting up a corporate wellness program — we'd love to hear from you.</p>
+        <div class="contact-items">
+          <div class="contact-item"><div class="contact-item-icon">☎</div><div><div class="contact-item-label">Call / WhatsApp</div><div class="contact-item-value"><a href="tel:+233547114673">0547 114 673</a></div></div></div>
+          <div class="contact-item"><div class="contact-item-icon">✉</div><div><div class="contact-item-label">Email</div><div class="contact-item-value"><a href="mailto:fitwitandi@gmail.com">fitwitandi@gmail.com</a></div></div></div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div style="width:100%">
+              <div class="contact-item-label">Location</div>
+              <div class="contact-item-value">
+                <span onclick="toggleMap()" style="cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.4);transition:color .2s;" onmouseover="this.style.color='#aaa'" onmouseout="this.style.color=''">
+                  Signature Apartments, Shiashie, Accra
+                </span>
+                <span onclick="toggleMap()" id="mapToggleIcon" style="margin-left:.5rem;font-size:.75rem;color:var(--muted);cursor:pointer;">▼ View Map</span>
+              </div>
+              <div id="locationMap" style="display:none;margin-top:1rem;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 4px 20px rgba(0,0,0,.4);">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.8!2d-0.1655!3d5.6037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9b8c5e7d4a4b%3A0x0!2sSignature+Apartments%2C+Shiashie%2C+Accra!5e0!3m2!1sen!2sgh!4v1700000000000!5m2!1sen!2sgh"
+                  width="100%"
+                  height="280"
+                  style="border:0;display:block;"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="FitWitAndi Gym Location">
+                </iframe>
+                <div style="padding:.6rem 1rem;background:rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:.72rem;color:var(--muted);letter-spacing:1px;">Signature Apartments, Shiashie, Accra</span>
+                  <a href="https://maps.google.com/?q=Signature+Apartments+Shiashie+Accra" target="_blank" rel="noopener noreferrer" style="font-size:.7rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:1px;border:1px solid rgba(255,255,255,.2);padding:.3rem .7rem;border-radius:4px;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background=''">Open in Maps ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item"><div class="contact-item-icon">📱</div><div><div class="contact-item-label">Instagram</div><div class="contact-item-value"><a href="https://instagram.com/fitwitandigym" target="_blank">@fitwitandigym</a></div></div></div>
+        </div>
+      </div>
+      <form id="contactForm" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Kwame" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Mensah" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" placeholder="+233 XX XXX XXXX" required>
+          <div class="form-note">We'll use this to contact you. WhatsApp & SMS friendly.</div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email (Optional)</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com">
+          <div class="form-note">Not required — we can reach you by phone</div>
+        </div>
+        <div class="form-group">
+          <label for="interest">I'm Interested In *</label>
+          <select id="interest" name="interest" required>
+            <option value="">Select a program...</option>
+            <option value="personal-training">Personal Training</option>
+            <option value="group-classes">Group Classes</option>
+            <option value="corporate">Corporate Wellness Program</option>
+            <option value="kids">Kids Classes</option>
+            <option value="membership">Full Gym Membership</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message (Optional)</label>
+          <textarea id="message" name="message" rows="4" placeholder="Tell us your goals or any questions..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;padding:1.1rem;font-size:.85rem">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- KIDS -->
+<section id="kids" aria-labelledby="kids-title">
+  <div class="kids-inner">
+    <div class="section-label">For Young Athletes</div>
+    <h2 class="section-title" id="kids-title">KIDS <span class="outline">PROGRAMS</span></h2>
+    <div class="kids-grid">
+      <div class="kids-content">
+        <p>We believe fitness starts young. Our kids programs build confidence, coordination, and a lifelong love of movement — in a safe, fun, and nurturing environment.</p>
+        <p>Led by qualified instructors who specialize in child development, every class is age-appropriate and structured to bring out the best in every young athlete.</p>
+        <a href="#contact" class="btn-primary">Enrol Your Child</a>
+      </div>
+      <div>
+        <div class="kids-classes">
+          <div class="kids-class"><div class="kids-class-name">Gymnastics</div></div>
+          <div class="kids-class"><div class="kids-class-name">Karate</div></div>
+          <div class="kids-class"><div class="kids-class-name">Ballet</div></div>
+        </div>
+        <p style="margin-top:1.2rem;font-size:.75rem;color:var(--muted);letter-spacing:1px;text-align:center">Ages 4–14 · All skill levels welcome</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">FITWITANDI</div>
+      <p>Accra's premier fitness destination. Train with purpose, transform with discipline, and thrive with community.</p>
+      <div class="footer-social">
+        <a class="social-btn" href="https://instagram.com/fitwitandigym" target="_blank" rel="noopener noreferrer">IG</a>
+        <a class="social-btn" href="https://wa.me/233547114673" target="_blank" rel="noopener noreferrer">WA</a>
+        <a class="social-btn" href="mailto:fitwitandi@gmail.com">@</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="#programs">HIIT & Circuit</a></li>
+        <li><a href="#programs">Yoga & Pilates</a></li>
+        <li><a href="#programs">Spinning</a></li>
+        <li><a href="#programs">Dance & Aerobics</a></li>
+        <li><a href="#programs">Kickboxing</a></li>
+        <li><a href="#kids">Kids Classes</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#corporate">Corporate Wellness</a></li>
+        <li><a href="#facilities">Facilities</a></li>
+        <li><a href="#contact">Join Now</a></li>
+        <li><a href="tel:+233547114673">Call Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 FitWitAndi Gym. All rights reserved. · Signature Apartments, Shiashie, Accra</p>
+    <div class="footer-tagline">TRAIN · TRANSFORM · THRIVE</div>
+  </div>
+</footer>
+
+<!-- Video Modal -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-content">
+    <button class="modal-close-btn" onclick="closeVideoModal()">&times;</button>
+    <video id="modalVideo" controls>
+      <source src="" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+// Hover effect on interactive elements
+document.querySelectorAll('a, button, .program-card, .gallery-item, .kids-class, .client-chip, .workout-card, .pricing-contact-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '18px';
+    cursor.style.height = '18px';
+    ring.style.width = '55px';
+    ring.style.height = '55px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '10px';
+    cursor.style.height = '10px';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+  });
+});
+
+// Nav on scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.background = window.scrollY > 60 ? 'rgba(10,10,10,.98)' : 'rgba(10,10,10,.92)';
+});
+
+// Mobile menu
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  menu.classList.toggle('open', menuOpen);
+  hamburger.setAttribute('aria-expanded', menuOpen);
+  const spans = hamburger.querySelectorAll('span');
+  spans[0].style.transform = menuOpen ? 'rotate(45deg) translate(5px, 5px)' : '';
+  spans[1].style.opacity = menuOpen ? '0' : '1';
+  spans[2].style.transform = menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : '';
+}
+
+// Program filter
+function filterPrograms(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  document.querySelectorAll('.program-card').forEach(c => {
+    c.classList.toggle('visible', cat === 'all' || c.dataset.cat === cat);
+  });
+}
+
+// Video Modal Functions
+function playVideo(videoSrc) {
+  const modal = document.getElementById('videoModal');
+  const video = document.getElementById('modalVideo');
+  video.src = videoSrc;
+  modal.classList.add('active');
+  video.play();
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const video = document.getElementById('modalVideo');
+  modal.classList.remove('active');
+  video.pause();
+  video.src = '';
+}
+
+// Escape key to close modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeVideoModal();
+});
+
+// Form submit with WhatsApp option - PHONE ONLY REQUIRED
+function submitForm(event) {
+  event.preventDefault();
+  
+  const form = document.getElementById('contactForm');
+  const formData = new FormData(form);
+  const firstName = formData.get('firstName');
+  const lastName = formData.get('lastName');
+  const email = formData.get('email');
+  const phone = formData.get('phone');
+  const interest = formData.get('interest');
+  const message = formData.get('message');
+  
+  // Prepare email data (email is optional, but phone is required)
+  const emailData = {
+    to: 'fitwitandi@gmail.com',
+    subject: `New Inquiry from ${firstName} ${lastName}`,
+    message: `Name: ${firstName} ${lastName}\nPhone: ${phone}\nEmail: ${email || 'Not provided'}\nInterest: ${interest}\nMessage: ${message || 'No message'}`
+  };
+  
+  // Send to email using FormSubmit
+  sendEmail(emailData);
+  
+  // Show success message with WhatsApp option
+  showSuccessMessage(phone, `${firstName} ${lastName}`, interest);
+  
+  // Reset form
+  form.reset();
+}
+
+// Send email function (using FormSubmit.co)
+function sendEmail(data) {
+  fetch('https://formsubmit.co/ajax/fitwitandi@gmail.com', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      name: data.subject,
+      message: data.message,
+      _captcha: false
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Inquiry recorded successfully:', data);
+  })
+  .catch(error => {
+    console.log('Processing inquiry (offline mode possible):', error);
+  });
+}
+
+// Show success message with WhatsApp CTA
+function showSuccessMessage(phone, name, interest) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'success-message show';
+  
+  const whatsappUrl = `https://wa.me/233547114673?text=Hi%20FitWitAndi%2C%20I%20am%20${encodeURIComponent(name)}%20and%20I%20am%20interested%20in%20${encodeURIComponent(interest)}.%20My%20phone%20is%20${encodeURIComponent(phone)}.%20Can%20you%20get%20back%20to%20me%3F`;
+  
+  messageDiv.innerHTML = `
+    <div class="check-icon">✓</div>
+    <div class="message-text">
+      <strong>Message Sent Successfully!</strong>
+      <p>We've received your details and will contact you shortly.</p>
+    </div>
+    <div class="success-message-actions">
+      <a href="${whatsappUrl}" target="_blank" class="success-action-btn whatsapp">Chat on WhatsApp</a>
+      <button class="success-action-btn close" onclick="this.parentElement.parentElement.remove()">Close</button>
+    </div>
+  `;
+  
+  document.body.appendChild(messageDiv);
+  
+  // Auto-remove after 8 seconds
+  setTimeout(() => {
+    if (messageDiv.parentElement) {
+      messageDiv.remove();
+    }
+  }, 8000);
+}
+
+// Toggle map visibility
+function toggleMap() {
+  const map = document.getElementById('locationMap');
+  const icon = document.getElementById('mapToggleIcon');
+  const isHidden = map.style.display === 'none';
+  map.style.display = isHidden ? 'block' : 'none';
+  icon.textContent = isHidden ? '▲ Hide Map' : '▼ View Map';
+}
+
+// Scroll to contact
+function scrollToContact() {
+  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Fade up animation on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
